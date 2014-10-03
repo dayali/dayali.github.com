@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title></title>
+
+    <script language="javascript" type="text/javascript">
+// <!CDATA[
+
+        function btnSubmit_onclick() {
+            var strUserName = document.getElementById("txtUserName").value;
+            var strPassword = document.getElementById("txtPassword").value;
+
+            var xmlHttpReq = new XMLHttpRequest();
+
+            if (!xmlHttpReq) {
+                xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+
+                if (!xmlHttpReq) {
+                    xmlHttpReq = new ActiveXObject("MSXML2.XMLHTTP");
+                }
+            }
+
+            if (xmlHttpReq) {
+                var strUrl = "/Register.aspx?UserName=" + strUserName + "&Password=" + strPassword;
+                xmlHttpReq.open("POST", strUrl, false);
+
+                xmlHttpReq.onreadystatechange = function() {
+                    if (xmlHttpReq.readyState == 4) {
+                        if (xmlHttpReq.status == 200) {
+                            var strResult = xmlHttpReq.responseText;
+                            window.alert(strResult);
+                        }
+                    }
+                }
+                xmlHttpReq.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                //xmlHttpReq.send("UserName=" + strUserName + "&Password=" + strPassword);
+                xmlHttpReq.send(null);
+            }
+            else {
+            }
+        }
+
+// ]]>
+    </script>
+</head>
+<body>
+
+   <br />
+        ÓÃ»§Ãû:<input id="txtUserName" type="text" />
+   <br />
+        ÃÜ    Âë:<input id="txtPassword" type="text" />
+   <br />
+        <input id="btnSubmit" type="button" value="Submit" onclick="return btnSubmit_onclick()" />
+
+</body>
+</html>
+
+Register.aspx.cs
+
+public partial class Register : System.Web.UI.Page
+    {
+        protected void Page_Load ( object sender, EventArgs e )
+        {
+            if ( !Page.IsPostBack )
+            {
+                string strUserName = Request.QueryString [ "UserName" ];
+                string strPassword = Request.QueryString [ "Password" ];
+                Response.Write ( strUserName + "," + strPassword );
+                Response.End ( );
+            }
+        }
+    }
